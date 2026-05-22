@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { DashboardTab, DashboardTabs } from "@/components/DashboardTabs";
 import { SensorChart } from "@/components/SensorChart";
@@ -8,33 +8,61 @@ import { SensorMetricCard } from "@/components/SensorMetricCard";
 import { SensorTable } from "@/components/SensorTable";
 import { SmallChartButton } from "@/components/SmallChartButton";
 import { StatCard } from "@/components/StatCard";
-import { useMockLiveSensorData } from "@/hooks/useMockLiveSensorData";
+import { useReplaySensorData } from "@/hooks/useReplaySensorData";
 import {
   average,
   createChartData,
+  extractMessages,
   getSensorValues,
   latestValue,
   maximum,
   minimum,
+  parseSensorMessages,
 } from "@/lib/sensor-data";
 import type { SensorReading } from "@/types/sensor";
 
-type DashboardProps = {
-  initialRawMessageCount: number;
-  initialSensorReadings: SensorReading[];
-};
-
 type SelectedChart = "pressure" | "humidity" | "temperature";
 
-export function Dashboard({
-  initialRawMessageCount,
-  initialSensorReadings,
-}: DashboardProps) {
+export function Dashboard() {
   const [activeTab, setActiveTab] = useState<DashboardTab>("overview");
   const [selectedChart, setSelectedChart] =
     useState<SelectedChart>("pressure");
 
-  const sensorReadings = useMockLiveSensorData(initialSensorReadings);
+  const [rawMessageCount, setRawMessageCount] = useState(0);
+  const [sourceReadings, setSourceReadings] = useState<SensorReading[]>([]);
+  const [isLoadingData, setIsLoadingData] = useState(true);
+  const [dataError, setDataError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function loadSensorData() {
+      try {
+        setIsLoadingData(true);
+
+        const response = await fetch("/data/sensor_data.json");
+
+        if (!response.ok) {
+          throw new Error("Could not load sensor data file");
+        }
+
+        const data = await response.json();
+        const messages = extractMessages(data);
+        const readings = parseSensorMessages(messages);
+
+        setRawMessageCount(messages.length);
+        setSourceReadings(readings);
+        setDataError(null);
+      } catch (error) {
+        console.error(error);
+        setDataError("Failed to load sensor data");
+      } finally {
+        setIsLoadingData(false);
+      }
+    }
+
+    loadSensorData();
+  }, []);
+
+  const sensorReadings = useReplaySensorData(sourceReadings);
 
   const latestReadings = useMemo(() => {
     return sensorReadings.slice(-50).reverse();
@@ -93,6 +121,59 @@ export function Dashboard({
     },
   }[selectedChart];
 
+  if (isLoadingData) {
+    return (
+      <div className="flex min-h-screen bg-slate-950">
+        <DashboardTabs activeTab={activeTab} onTabChange={setActiveTab} />
+
+        <main className="min-w-0 flex-1 p-4">
+          <section className="rounded-2xl border border-slate-800 bg-gradient-to-br from-emerald-500/10 to-slate-900 p-6 shadow-xl shadow-black/20">
+            <p className="text-sm font-semibold uppercase tracking-wider text-emerald-300">
+              Loading
+            </p>
+
+            <h1 className="mt-3 text-3xl font-bold text-white">
+              Loading sensor data...
+            </h1>
+
+            <p className="mt-4 text-slate-400">
+              The dashboard is reading the robot sensor data file.
+            </p>
+          </section>
+        </main>
+      </div>
+    );
+  }
+
+  if (dataError) {
+    return (
+      <div className="flex min-h-screen bg-slate-950">
+        <DashboardTabs activeTab={activeTab} onTabChange={setActiveTab} />
+
+        <main className="min-w-0 flex-1 p-4">
+          <section className="rounded-2xl border border-red-900/60 bg-gradient-to-br from-red-500/10 to-slate-900 p-6 shadow-xl shadow-black/20">
+            <p className="text-sm font-semibold uppercase tracking-wider text-red-300">
+              Error
+            </p>
+
+            <h1 className="mt-3 text-3xl font-bold text-white">
+              Sensor data could not be loaded
+            </h1>
+
+            <p className="mt-4 text-slate-400">{dataError}</p>
+
+            <p className="mt-4 text-sm text-slate-500">
+              Make sure the file exists at{" "}
+              <code className="rounded bg-slate-950 px-2 py-1 text-slate-300">
+                public/data/sensor_data.json
+              </code>
+            </p>
+          </section>
+        </main>
+      </div>
+    );
+  }
+
   return (
     <div className="flex min-h-screen bg-slate-950">
       <DashboardTabs activeTab={activeTab} onTabChange={setActiveTab} />
@@ -102,26 +183,24 @@ export function Dashboard({
           <section className="space-y-4">
             <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
               <StatCard
-                title="Live Session Messages"
+                title="Replay Session Messages"
                 value={sensorReadings.length}
-                subtitle="Readings currently used by the dashboard"
+                subtitle="Readings currently shown in the live replay"
                 accent="emerald"
               />
 
               <StatCard
-                title="Sensors Found"
-                value={
-                  new Set(sensorReadings.map((reading) => reading.sensor)).size
-                }
-                subtitle="Pressure, humidity, and temperature"
-                accent="sky"
+                title="Source File Messages"
+                value={rawMessageCount}
+                subtitle="Total messages loaded from the data file"
+                accent="violet"
               />
 
               <StatCard
                 title="Latest Update"
                 value={latestUpdateTime.split(" ")[1] ?? latestUpdateTime}
                 subtitle={latestUpdateTime.split(" ")[0] ?? ""}
-                accent="violet"
+                accent="sky"
               />
             </div>
 
@@ -134,14 +213,15 @@ export function Dashboard({
                 </p>
 
                 <h2 className="mt-3 text-3xl font-bold text-white">
-                  Robot Environmental Monitoring is Running
+                  Robot Sensor Data Replay is Running
                 </h2>
 
                 <p className="mt-4 max-w-3xl leading-7 text-slate-400">
-                  The dashboard is currently using sensor data from the robot
-                  file and mock live updates. New pressure, humidity, and
-                  temperature readings are generated every few seconds to
-                  simulate a live robot sensor stream.
+                  The dashboard is replaying real sensor readings from the robot
+                  data file. Pressure, humidity, and temperature readings are
+                  shown gradually to simulate a live robot sensor stream. When
+                  the replay reaches the end of the file, it starts again from
+                  the beginning.
                 </p>
 
                 <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-3">
@@ -244,13 +324,13 @@ export function Dashboard({
           <section className="space-y-4">
             <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
               <StatCard
-                title="Initial Raw MQTT Messages"
-                value={initialRawMessageCount}
+                title="Source File Messages"
+                value={rawMessageCount}
                 accent="violet"
               />
 
               <StatCard
-                title="Live Session Messages"
+                title="Replay Session Messages"
                 value={sensorReadings.length}
                 accent="emerald"
               />
