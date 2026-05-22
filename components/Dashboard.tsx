@@ -8,7 +8,6 @@ import { SensorMetricCard } from "@/components/SensorMetricCard";
 import { SensorTable } from "@/components/SensorTable";
 import { SmallChartButton } from "@/components/SmallChartButton";
 import { StatCard } from "@/components/StatCard";
-import { useReplaySensorData } from "@/hooks/useReplaySensorData";
 import {
   average,
   createChartData,
@@ -29,7 +28,7 @@ export function Dashboard() {
     useState<SelectedChart>("pressure");
 
   const [rawMessageCount, setRawMessageCount] = useState(0);
-  const [sourceReadings, setSourceReadings] = useState<SensorReading[]>([]);
+  const [sensorReadings, setSensorReadings] = useState<SensorReading[]>([]);
   const [isLoadingData, setIsLoadingData] = useState(true);
   const [dataError, setDataError] = useState<string | null>(null);
 
@@ -49,7 +48,7 @@ export function Dashboard() {
         const readings = parseSensorMessages(messages);
 
         setRawMessageCount(messages.length);
-        setSourceReadings(readings);
+        setSensorReadings(readings);
         setDataError(null);
       } catch (error) {
         console.error(error);
@@ -61,8 +60,6 @@ export function Dashboard() {
 
     loadSensorData();
   }, []);
-
-  const sensorReadings = useReplaySensorData(sourceReadings);
 
   const latestReadings = useMemo(() => {
     return sensorReadings.slice(-50).reverse();
@@ -183,21 +180,21 @@ export function Dashboard() {
           <section className="space-y-4">
             <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
               <StatCard
-                title="Replay Session Messages"
+                title="Sensor Messages"
                 value={sensorReadings.length}
-                subtitle="Readings currently shown in the live replay"
+                subtitle="Temperature, humidity, and pressure readings"
                 accent="emerald"
               />
 
               <StatCard
                 title="Source File Messages"
                 value={rawMessageCount}
-                subtitle="Total messages loaded from the data file"
+                subtitle="Total messages loaded from the JSON file"
                 accent="violet"
               />
 
               <StatCard
-                title="Latest Update"
+                title="Latest Timestamp"
                 value={latestUpdateTime.split(" ")[1] ?? latestUpdateTime}
                 subtitle={latestUpdateTime.split(" ")[0] ?? ""}
                 accent="sky"
@@ -213,34 +210,34 @@ export function Dashboard() {
                 </p>
 
                 <h2 className="mt-3 text-3xl font-bold text-white">
-                  Robot Sensor Data Replay is Running
+                  Robot Sensor Data Loaded Successfully
                 </h2>
 
                 <p className="mt-4 max-w-3xl leading-7 text-slate-400">
-                  The dashboard is replaying real sensor readings from the robot
-                  data file. Pressure, humidity, and temperature readings are
-                  shown gradually to simulate a live robot sensor stream. When
-                  the replay reaches the end of the file, it starts again from
-                  the beginning.
+                  The dashboard is displaying static robot sensor readings from
+                  the data file. The data includes pressure, humidity, and
+                  temperature measurements collected through MQTT topics.
                 </p>
 
                 <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-3">
                   <div className="rounded-2xl border border-slate-800 bg-slate-950/40 p-4">
-                    <p className="text-sm text-slate-500">Pressure</p>
+                    <p className="text-sm text-slate-500">Latest Pressure</p>
                     <p className="mt-2 text-2xl font-bold text-white">
                       {latestPressure.toFixed(1)} hPa
                     </p>
                   </div>
 
                   <div className="rounded-2xl border border-slate-800 bg-slate-950/40 p-4">
-                    <p className="text-sm text-slate-500">Humidity</p>
+                    <p className="text-sm text-slate-500">Latest Humidity</p>
                     <p className="mt-2 text-2xl font-bold text-white">
                       {latestHumidity.toFixed(1)}%
                     </p>
                   </div>
 
                   <div className="rounded-2xl border border-slate-800 bg-slate-950/40 p-4">
-                    <p className="text-sm text-slate-500">Temperature</p>
+                    <p className="text-sm text-slate-500">
+                      Latest Temperature
+                    </p>
                     <p className="mt-2 text-2xl font-bold text-white">
                       {latestTemperature.toFixed(1)}°C
                     </p>
@@ -330,7 +327,7 @@ export function Dashboard() {
               />
 
               <StatCard
-                title="Replay Session Messages"
+                title="Sensor Messages"
                 value={sensorReadings.length}
                 accent="emerald"
               />
