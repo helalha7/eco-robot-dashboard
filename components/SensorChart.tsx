@@ -47,7 +47,7 @@ export function SensorChart({
 
   return (
     <section
-      className={`relative flex min-h-0 flex-col overflow-hidden rounded-2xl border border-slate-800 bg-gradient-to-br ${styles.gradient} to-slate-900 p-4 shadow-xl shadow-black/20`}
+      className={`relative overflow-hidden rounded-2xl border border-slate-800 bg-gradient-to-br ${styles.gradient} to-slate-900 p-4 shadow-xl shadow-black/20`}
     >
       <div className="absolute right-0 top-0 h-28 w-28 rounded-full bg-white/5 blur-2xl" />
 
@@ -66,7 +66,7 @@ export function SensorChart({
         )}
       </div>
 
-      <div className="relative mt-4 h-full min-h-0">
+      <div className="relative mt-4 h-[320px]">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={data}>
             <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />

@@ -7,7 +7,6 @@ type DashboardTabsProps = {
   onTabChange: (tab: DashboardTab) => void;
 };
 
-
 const tabs: { id: DashboardTab; label: string; description: string }[] = [
   {
     id: "overview",
@@ -28,7 +27,7 @@ const tabs: { id: DashboardTab; label: string; description: string }[] = [
 
 export function DashboardTabs({ activeTab, onTabChange }: DashboardTabsProps) {
   return (
-    <aside className="h-full w-52 shrink-0 border-r border-slate-800 bg-slate-950 p-3">
+    <aside className="sticky top-0 h-screen w-52 shrink-0 border-r border-slate-800 bg-slate-950 p-3">
       <div className="relative overflow-hidden rounded-2xl border border-slate-800 bg-gradient-to-br from-emerald-500/10 to-slate-900 p-4 shadow-xl shadow-black/20">
         <div className="absolute right-0 top-0 h-20 w-20 rounded-full bg-white/5 blur-2xl" />
 

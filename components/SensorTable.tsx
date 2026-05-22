@@ -6,14 +6,14 @@ type SensorTableProps = {
 
 export function SensorTable({ readings }: SensorTableProps) {
   return (
-    <section className="relative min-h-0 overflow-hidden rounded-2xl border border-slate-800 bg-gradient-to-br from-slate-800/40 to-slate-900 p-5 shadow-xl shadow-black/20">
+    <section className="relative overflow-hidden rounded-2xl border border-slate-800 bg-gradient-to-br from-slate-800/40 to-slate-900 p-5 shadow-xl shadow-black/20">
       <div className="absolute right-0 top-0 h-24 w-24 rounded-full bg-white/5 blur-2xl" />
 
       <h2 className="relative text-base font-semibold text-white">
         Latest Sensor Readings
       </h2>
 
-      <div className="relative mt-4 h-[calc(100%-2.5rem)] overflow-auto">
+      <div className="relative mt-4 max-h-[520px] overflow-auto">
         <table className="w-full border-collapse text-left text-sm">
           <thead className="sticky top-0 bg-slate-900">
             <tr className="border-b border-slate-800 text-slate-400">

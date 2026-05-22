@@ -94,81 +94,85 @@ export function Dashboard({
   }[selectedChart];
 
   return (
-    <div className="flex h-screen overflow-hidden bg-slate-950">
+    <div className="flex min-h-screen bg-slate-950">
       <DashboardTabs activeTab={activeTab} onTabChange={setActiveTab} />
 
-      <main className="flex-1 overflow-hidden p-4">
-      {activeTab === "overview" && (
-  <section className="grid h-full grid-rows-[auto_1fr] gap-4">
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-      <StatCard
-        title="Live Session Messages"
-        value={sensorReadings.length}
-        subtitle="Readings currently used by the dashboard"
-        accent="emerald"
-      />
+      <main className="min-w-0 flex-1 p-4">
+        {activeTab === "overview" && (
+          <section className="space-y-4">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+              <StatCard
+                title="Live Session Messages"
+                value={sensorReadings.length}
+                subtitle="Readings currently used by the dashboard"
+                accent="emerald"
+              />
 
-      <StatCard
-        title="Sensors Found"
-        value={new Set(sensorReadings.map((reading) => reading.sensor)).size}
-        subtitle="Pressure, humidity, and temperature"
-        accent="sky"
-      />
+              <StatCard
+                title="Sensors Found"
+                value={
+                  new Set(sensorReadings.map((reading) => reading.sensor)).size
+                }
+                subtitle="Pressure, humidity, and temperature"
+                accent="sky"
+              />
 
-      <StatCard
-        title="Latest Update"
-        value={latestUpdateTime.split(" ")[1] ?? latestUpdateTime}
-        subtitle={latestUpdateTime.split(" ")[0] ?? ""}
-        accent="violet"
-      />
-    </div>
+              <StatCard
+                title="Latest Update"
+                value={latestUpdateTime.split(" ")[1] ?? latestUpdateTime}
+                subtitle={latestUpdateTime.split(" ")[0] ?? ""}
+                accent="violet"
+              />
+            </div>
 
-    <section className="relative overflow-hidden rounded-2xl border border-slate-800 bg-gradient-to-br from-emerald-500/10 to-slate-900 p-6 shadow-xl shadow-black/20">
-      <div className="absolute right-0 top-0 h-28 w-28 rounded-full bg-white/5 blur-2xl" />
+            <section className="relative overflow-hidden rounded-2xl border border-slate-800 bg-gradient-to-br from-emerald-500/10 to-slate-900 p-6 shadow-xl shadow-black/20">
+              <div className="absolute right-0 top-0 h-28 w-28 rounded-full bg-white/5 blur-2xl" />
 
-      <div className="relative">
-        <p className="text-sm font-semibold uppercase tracking-wider text-emerald-300">
-          Dashboard Status
-        </p>
+              <div className="relative">
+                <p className="text-sm font-semibold uppercase tracking-wider text-emerald-300">
+                  Dashboard Status
+                </p>
 
-        <h2 className="mt-3 text-3xl font-bold text-white">
-          Robot Environmental Monitoring is Running
-        </h2>
+                <h2 className="mt-3 text-3xl font-bold text-white">
+                  Robot Environmental Monitoring is Running
+                </h2>
 
-        <p className="mt-4 max-w-3xl leading-7 text-slate-400">
-          The dashboard is currently using mock live sensor data based on the
-          robot data file. New pressure, humidity, and temperature readings are
-          generated every few seconds to simulate a live robot sensor stream.
-        </p>
+                <p className="mt-4 max-w-3xl leading-7 text-slate-400">
+                  The dashboard is currently using sensor data from the robot
+                  file and mock live updates. New pressure, humidity, and
+                  temperature readings are generated every few seconds to
+                  simulate a live robot sensor stream.
+                </p>
 
-        <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-3">
-          <div className="rounded-2xl border border-slate-800 bg-slate-950/40 p-4">
-            <p className="text-sm text-slate-500">Pressure</p>
-            <p className="mt-2 text-2xl font-bold text-white">
-              {latestPressure.toFixed(1)} hPa
-            </p>
-          </div>
+                <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-3">
+                  <div className="rounded-2xl border border-slate-800 bg-slate-950/40 p-4">
+                    <p className="text-sm text-slate-500">Pressure</p>
+                    <p className="mt-2 text-2xl font-bold text-white">
+                      {latestPressure.toFixed(1)} hPa
+                    </p>
+                  </div>
 
-          <div className="rounded-2xl border border-slate-800 bg-slate-950/40 p-4">
-            <p className="text-sm text-slate-500">Humidity</p>
-            <p className="mt-2 text-2xl font-bold text-white">
-              {latestHumidity.toFixed(1)}%
-            </p>
-          </div>
+                  <div className="rounded-2xl border border-slate-800 bg-slate-950/40 p-4">
+                    <p className="text-sm text-slate-500">Humidity</p>
+                    <p className="mt-2 text-2xl font-bold text-white">
+                      {latestHumidity.toFixed(1)}%
+                    </p>
+                  </div>
 
-          <div className="rounded-2xl border border-slate-800 bg-slate-950/40 p-4">
-            <p className="text-sm text-slate-500">Temperature</p>
-            <p className="mt-2 text-2xl font-bold text-white">
-              {latestTemperature.toFixed(1)}°C
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-  </section>
-)}
+                  <div className="rounded-2xl border border-slate-800 bg-slate-950/40 p-4">
+                    <p className="text-sm text-slate-500">Temperature</p>
+                    <p className="mt-2 text-2xl font-bold text-white">
+                      {latestTemperature.toFixed(1)}°C
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </section>
+        )}
+
         {activeTab === "sensors" && (
-          <section className="grid h-full grid-rows-[auto_1fr_auto] gap-4">
+          <section className="space-y-4">
             <div className="grid grid-cols-1 gap-4 xl:grid-cols-3">
               <SensorMetricCard
                 title="Pressure"
@@ -237,7 +241,7 @@ export function Dashboard({
         )}
 
         {activeTab === "data" && (
-          <section className="grid h-full grid-rows-[auto_1fr] gap-4">
+          <section className="space-y-4">
             <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
               <StatCard
                 title="Initial Raw MQTT Messages"
