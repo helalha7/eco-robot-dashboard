@@ -4,7 +4,6 @@ import { useEffect, useMemo, useState } from "react";
 
 import { DashboardTab, DashboardTabs } from "@/components/DashboardTabs";
 import { SensorChart } from "@/components/SensorChart";
-import { SensorMetricCard } from "@/components/SensorMetricCard";
 import { SensorTable } from "@/components/SensorTable";
 import { SmallChartButton } from "@/components/SmallChartButton";
 import { StatCard } from "@/components/StatCard";
@@ -120,10 +119,10 @@ export function Dashboard() {
 
   if (isLoadingData) {
     return (
-      <div className="flex min-h-screen bg-slate-950">
+      <div className="min-h-screen bg-slate-950">
         <DashboardTabs activeTab={activeTab} onTabChange={setActiveTab} />
 
-        <main className="min-w-0 flex-1 p-4">
+        <main className="mx-auto max-w-7xl p-4">
           <section className="rounded-2xl border border-slate-800 bg-gradient-to-br from-emerald-500/10 to-slate-900 p-6 shadow-xl shadow-black/20">
             <p className="text-sm font-semibold uppercase tracking-wider text-emerald-300">
               Loading
@@ -144,10 +143,10 @@ export function Dashboard() {
 
   if (dataError) {
     return (
-      <div className="flex min-h-screen bg-slate-950">
+      <div className="min-h-screen bg-slate-950">
         <DashboardTabs activeTab={activeTab} onTabChange={setActiveTab} />
 
-        <main className="min-w-0 flex-1 p-4">
+        <main className="mx-auto max-w-7xl p-4">
           <section className="rounded-2xl border border-red-900/60 bg-gradient-to-br from-red-500/10 to-slate-900 p-6 shadow-xl shadow-black/20">
             <p className="text-sm font-semibold uppercase tracking-wider text-red-300">
               Error
@@ -172,10 +171,10 @@ export function Dashboard() {
   }
 
   return (
-    <div className="flex min-h-screen bg-slate-950">
+    <div className="min-h-screen bg-slate-950">
       <DashboardTabs activeTab={activeTab} onTabChange={setActiveTab} />
 
-      <main className="min-w-0 flex-1 p-4">
+      <main className="mx-auto max-w-7xl p-4">
         {activeTab === "overview" && (
           <section className="space-y-4">
             <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
@@ -251,30 +250,39 @@ export function Dashboard() {
         {activeTab === "sensors" && (
           <section className="space-y-4">
             <div className="grid grid-cols-1 gap-4 xl:grid-cols-3">
-              <SensorMetricCard
+              <SmallChartButton
                 title="Pressure"
                 value={`${latestPressure.toFixed(1)} hPa`}
                 average={`${averagePressure.toFixed(1)} hPa`}
                 minimum={`${minPressure.toFixed(1)}`}
                 maximum={`${maxPressure.toFixed(1)}`}
+                data={pressureChartData}
+                isActive={selectedChart === "pressure"}
+                onClick={() => setSelectedChart("pressure")}
                 accent="pressure"
               />
 
-              <SensorMetricCard
+              <SmallChartButton
                 title="Humidity"
                 value={`${latestHumidity.toFixed(1)}%`}
                 average={`${averageHumidity.toFixed(1)}%`}
                 minimum={`${minHumidity.toFixed(1)}`}
                 maximum={`${maxHumidity.toFixed(1)}`}
+                data={humidityChartData}
+                isActive={selectedChart === "humidity"}
+                onClick={() => setSelectedChart("humidity")}
                 accent="humidity"
               />
 
-              <SensorMetricCard
+              <SmallChartButton
                 title="Temperature"
                 value={`${latestTemperature.toFixed(1)}°C`}
                 average={`${averageTemperature.toFixed(1)}°C`}
                 minimum={`${minTemperature.toFixed(1)}`}
                 maximum={`${maxTemperature.toFixed(1)}`}
+                data={temperatureChartData}
+                isActive={selectedChart === "temperature"}
+                onClick={() => setSelectedChart("temperature")}
                 accent="temperature"
               />
             </div>
@@ -285,35 +293,6 @@ export function Dashboard() {
               unit={selectedChartConfig.unit}
               accent={selectedChart}
             />
-
-            <div className="grid grid-cols-1 gap-4 xl:grid-cols-3">
-              <SmallChartButton
-                title="Pressure"
-                value={`${latestPressure.toFixed(1)} hPa`}
-                data={pressureChartData}
-                isActive={selectedChart === "pressure"}
-                onClick={() => setSelectedChart("pressure")}
-                accent="pressure"
-              />
-
-              <SmallChartButton
-                title="Humidity"
-                value={`${latestHumidity.toFixed(1)}%`}
-                data={humidityChartData}
-                isActive={selectedChart === "humidity"}
-                onClick={() => setSelectedChart("humidity")}
-                accent="humidity"
-              />
-
-              <SmallChartButton
-                title="Temperature"
-                value={`${latestTemperature.toFixed(1)}°C`}
-                data={temperatureChartData}
-                isActive={selectedChart === "temperature"}
-                onClick={() => setSelectedChart("temperature")}
-                accent="temperature"
-              />
-            </div>
           </section>
         )}
 

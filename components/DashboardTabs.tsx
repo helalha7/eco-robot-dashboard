@@ -7,88 +7,76 @@ type DashboardTabsProps = {
   onTabChange: (tab: DashboardTab) => void;
 };
 
-const tabs: { id: DashboardTab; label: string; description: string }[] = [
+const tabs: { id: DashboardTab; label: string; icon: string }[] = [
   {
     id: "overview",
     label: "Overview",
-    description: "System summary",
+    icon: "⌁",
   },
   {
     id: "sensors",
-    label: "Sensors",
-    description: "Live sensor dashboard",
+    label: "Live Sensors",
+    icon: "◌",
   },
   {
     id: "data",
     label: "Data",
-    description: "Latest sensor readings",
+    icon: "▦",
   },
 ];
 
 export function DashboardTabs({ activeTab, onTabChange }: DashboardTabsProps) {
   return (
-    <aside className="sticky top-0 h-screen w-52 shrink-0 border-r border-slate-800 bg-slate-950 p-3">
-      <div className="relative overflow-hidden rounded-2xl border border-slate-800 bg-gradient-to-br from-emerald-500/10 to-slate-900 p-4 shadow-xl shadow-black/20">
-        <div className="absolute right-0 top-0 h-20 w-20 rounded-full bg-white/5 blur-2xl" />
+    <header className="sticky top-0 z-50 border-b border-slate-800/70 bg-slate-950/80 px-4 py-4 backdrop-blur-xl">
+      <div className="mx-auto grid max-w-7xl grid-cols-[1fr_auto_1fr] items-center gap-4">
+        <div className="flex items-center gap-3 justify-self-start">
+          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-500 text-xl font-bold text-slate-950 shadow-lg shadow-emerald-500/20">
+            E
+          </div>
 
-        <div className="relative">
-          <p className="text-xs font-semibold uppercase tracking-wider text-emerald-300">
-            Live Mock
-          </p>
+          <div>
+            <h1 className="text-2xl font-black tracking-tight text-white">
+              EcoSense<span className="text-emerald-400">Lab</span>
+            </h1>
 
-          <h1 className="mt-2 text-lg font-bold text-white">Eco Robot</h1>
+            <p className="-mt-1 text-xs text-slate-500">Sensor Dashboard</p>
+          </div>
+        </div>
 
-          <p className="mt-1 text-xs leading-5 text-slate-400">
-            Environmental sensor dashboard
-          </p>
+        <nav className="justify-self-center">
+          <div className="flex items-center gap-1 rounded-2xl border border-slate-800 bg-slate-900/70 p-1.5 shadow-xl shadow-black/20">
+            {tabs.map((tab) => {
+              const isActive = activeTab === tab.id;
+
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => onTabChange(tab.id)}
+                  className={`flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition ${
+                    isActive
+                      ? "border border-emerald-400/40 bg-slate-800 text-white shadow-[0_0_0_2px_rgba(16,185,129,0.18)]"
+                      : "text-slate-400 hover:bg-slate-800/60 hover:text-white"
+                  }`}
+                >
+                  <span
+                    className={`text-lg ${
+                      isActive ? "text-emerald-400" : "text-slate-500"
+                    }`}
+                  >
+                    {tab.icon}
+                  </span>
+
+                  {tab.label}
+                </button>
+              );
+            })}
+          </div>
+        </nav>
+
+        <div className="justify-self-end">
+          
         </div>
       </div>
-
-      <nav className="mt-4 space-y-2">
-        {tabs.map((tab) => {
-          const isActive = activeTab === tab.id;
-
-          return (
-            <button
-              key={tab.id}
-              onClick={() => onTabChange(tab.id)}
-              className={`relative w-full overflow-hidden rounded-2xl border bg-gradient-to-br p-3 text-left shadow-xl shadow-black/20 transition ${
-                isActive
-                  ? "border-emerald-500 from-emerald-500/15 to-slate-900"
-                  : "border-slate-800 from-slate-800/40 to-slate-900 hover:border-slate-700"
-              }`}
-            >
-              <div className="absolute right-0 top-0 h-16 w-16 rounded-full bg-white/5 blur-2xl" />
-
-              <div className="relative flex items-start gap-3">
-                <span
-                  className={`mt-1 h-2.5 w-2.5 rounded-full ${
-                    isActive ? "bg-emerald-400" : "bg-slate-600"
-                  }`}
-                />
-
-                <div>
-                  <p
-                    className={`text-sm font-semibold ${
-                      isActive ? "text-white" : "text-slate-300"
-                    }`}
-                  >
-                    {tab.label}
-                  </p>
-
-                  <p
-                    className={`mt-1 text-xs leading-5 ${
-                      isActive ? "text-emerald-200/80" : "text-slate-500"
-                    }`}
-                  >
-                    {tab.description}
-                  </p>
-                </div>
-              </div>
-            </button>
-          );
-        })}
-      </nav>
-    </aside>
+    </header>
   );
 }
