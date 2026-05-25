@@ -1,6 +1,6 @@
 "use client";
 
-export type DashboardTab = "overview" | "sensors" | "data";
+export type DashboardTab = "overview" | "sensors" | "data" | "research";
 
 type DashboardTabsProps = {
   activeTab: DashboardTab;
@@ -15,13 +15,18 @@ const tabs: { id: DashboardTab; label: string; icon: string }[] = [
   },
   {
     id: "sensors",
-    label: "Live Sensors",
+    label: "Sensors",
     icon: "◌",
   },
   {
     id: "data",
     label: "Data",
     icon: "▦",
+  },
+  {
+    id: "research",
+    label: "Research",
+    icon: "◇",
   },
 ];
 
@@ -39,7 +44,9 @@ export function DashboardTabs({ activeTab, onTabChange }: DashboardTabsProps) {
               EcoSense<span className="text-emerald-400">Lab</span>
             </h1>
 
-            <p className="-mt-1 text-xs text-slate-500">Sensor Dashboard</p>
+            <p className="-mt-1 text-xs text-slate-500">
+              Sensor Dashboard
+            </p>
           </div>
         </div>
 
@@ -74,7 +81,9 @@ export function DashboardTabs({ activeTab, onTabChange }: DashboardTabsProps) {
         </nav>
 
         <div className="justify-self-end">
-          
+          <button className="rounded-2xl bg-emerald-500 px-5 py-3 text-sm font-bold text-slate-950 shadow-lg shadow-emerald-500/20 transition hover:bg-emerald-400">
+            Static Data
+          </button>
         </div>
       </div>
     </header>

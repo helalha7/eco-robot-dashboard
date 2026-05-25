@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 
 import { DashboardTab, DashboardTabs } from "@/components/DashboardTabs";
+import { ResearchRag } from "@/components/ResearchRag";
 import { SensorChart } from "@/components/SensorChart";
 import { SensorTable } from "@/components/SensorTable";
 import { SmallChartButton } from "@/components/SmallChartButton";
@@ -323,6 +324,8 @@ export function Dashboard() {
             <SensorTable readings={latestReadings} />
           </section>
         )}
+
+        {activeTab === "research" && <ResearchRag />}
       </main>
     </div>
   );
