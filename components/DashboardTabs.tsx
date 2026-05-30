@@ -10,23 +10,23 @@ type DashboardTabsProps = {
 const tabs: { id: DashboardTab; label: string; icon: string }[] = [
   {
     id: "overview",
-    label: "Overview",
-    icon: "⌁",
+    label: "Context",
+    icon: "🌱",
   },
   {
     id: "sensors",
-    label: "Sensors",
-    icon: "◌",
+    label: "Analysis",
+    icon: "📊",
   },
   {
     id: "data",
     label: "Data",
-    icon: "▦",
+    icon: "🗂️",
   },
   {
     id: "research",
-    label: "Research",
-    icon: "◇",
+    label: "Papers",
+    icon: "🔎",
   },
 ];
 
