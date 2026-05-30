@@ -32,7 +32,7 @@ const tabs: { id: DashboardTab; label: string; icon: string }[] = [
 
 export function DashboardTabs({ activeTab, onTabChange }: DashboardTabsProps) {
   return (
-    <header className="sticky top-0 z-50 border-b border-slate-800/70 bg-slate-950/80 px-4 py-4 backdrop-blur-xl">
+    <header className="sticky top-1 z-50 border-b border-slate-800/70 bg-slate-950/80 px-4 py-4 backdrop-blur-xl">
       <div className="mx-auto grid max-w-7xl grid-cols-[1fr_auto_1fr] items-center gap-4">
         <div className="flex items-center gap-3 justify-self-start">
           <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-500 text-xl font-bold text-slate-950 shadow-lg shadow-emerald-500/20">
