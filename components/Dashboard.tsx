@@ -176,77 +176,182 @@ export function Dashboard() {
       <DashboardTabs activeTab={activeTab} onTabChange={setActiveTab} />
 
       <main className="mx-auto max-w-7xl p-4">
-        {activeTab === "overview" && (
-          <section className="space-y-4">
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-              <StatCard
-                title="Sensor Messages"
-                value={sensorReadings.length}
-                subtitle="Temperature, humidity, and pressure readings"
-                accent="emerald"
-              />
+      {activeTab === "overview" && (
+  <section className="space-y-5">
+    <section
+      dir="rtl"
+      className="relative overflow-hidden rounded-3xl border border-slate-800 bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 p-6 text-right shadow-xl shadow-black/20"
+    >
+      <div className="absolute -left-10 -top-10 h-40 w-40 rounded-full bg-emerald-500/10 blur-3xl" />
+      <div className="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-sky-500/10 blur-3xl" />
 
-              <StatCard
-                title="Source File Messages"
-                value={rawMessageCount}
-                subtitle="Total messages loaded from the JSON file"
-                accent="violet"
-              />
+      <div className="relative space-y-6">
+        <div className="max-w-4xl">
+          <p className="text-sm font-semibold uppercase tracking-wider text-emerald-300">
+            Ecological Research Context
+          </p>
 
-              <StatCard
-                title="Latest Timestamp"
-                value={latestUpdateTime.split(" ")[1] ?? latestUpdateTime}
-                subtitle={latestUpdateTime.split(" ")[0] ?? ""}
-                accent="sky"
-              />
+          <h2 className="mt-3 text-3xl font-bold leading-tight text-white">
+            ניטור תנאים א־ביוטיים באמצעות רובוט וחיישנים
+          </h2>
+
+          <p className="mt-4 max-w-3xl leading-8 text-slate-400">
+            פרויקט EcoSense Lab עוסק בניטור וניתוח תנאים סביבתיים
+            א־ביוטיים בסביבת מעבדה מבוקרת של Industry 4.0. במסגרת
+            הפרויקט נעשה שימוש ברובוט נע שעליו מותקנת יד רובוטית עם
+            חיישנים סביבתיים. החיישנים מודדים טמפרטורה, לחות יחסית
+            ולחץ אוויר — מדדים הנחשבים לגורמים א־ביוטיים, כלומר גורמים
+            פיזיקליים שאינם חיים אך משפיעים על תנאי הסביבה.
+          </p>
+
+          <p className="mt-3 max-w-3xl leading-8 text-slate-400">
+            מכיוון שהחיישנים מותקנים על היד הרובוטית, ניתן לבצע דגימה
+            בגבהים שונים ולבדוק האם קיימת שונות אנכית במדדים הסביבתיים.
+            כלומר, הפרויקט בודק האם מדידה בגובה נמוך, בינוני וגבוה
+            נותנת ערכים שונים של טמפרטורה, לחות ולחץ.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+          <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/10 p-5">
+            <p className="text-sm font-semibold text-emerald-300">
+              שאלת המחקר
+            </p>
+
+            <h3 className="mt-3 text-xl font-bold leading-8 text-white">
+              האם קיימת שונות אנכית במדדי טמפרטורה, לחות ולחץ בסביבת
+              מעבדה מבוקרת, כפי שהיא נמדדת באמצעות חיישנים המותקנים על
+              יד רובוטית בגבהים שונים?
+            </h3>
+          </div>
+
+          <div className="rounded-2xl border border-sky-500/20 bg-sky-500/10 p-5">
+            <p className="text-sm font-semibold text-sky-300">
+              מטרת המחקר
+            </p>
+
+            <p className="mt-3 leading-8 text-slate-300">
+              מטרת המחקר היא לבדוק האם שינוי בגובה הדגימה של היד
+              הרובוטית מוביל לשינוי במדדים סביבתיים א־ביוטיים. תוצאות
+              המחקר יכולות לעזור להבין האם קיימים הבדלים סביבתיים בין
+              גבהים שונים במרחב המעבדה.
+            </p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+          <div className="rounded-2xl border border-slate-800 bg-slate-950/50 p-5">
+            <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-violet-500/15 text-violet-300">
+              X
             </div>
 
-            <section className="relative overflow-hidden rounded-2xl border border-slate-800 bg-gradient-to-br from-emerald-500/10 to-slate-900 p-6 shadow-xl shadow-black/20">
-              <div className="absolute right-0 top-0 h-28 w-28 rounded-full bg-white/5 blur-2xl" />
+            <h3 className="text-lg font-bold text-white">
+              משתנה בלתי תלוי
+            </h3>
 
-              <div className="relative">
-                <p className="text-sm font-semibold uppercase tracking-wider text-emerald-300">
-                  Dashboard Status
-                </p>
+            <p className="mt-3 leading-7 text-slate-400">
+              גובה הדגימה של היד הרובוטית. לדוגמה: גובה נמוך, גובה
+              בינוני וגובה גבוה. זהו המשתנה שלפיו משווים את המדידות.
+            </p>
+          </div>
 
-                <h2 className="mt-3 text-3xl font-bold text-white">
-                  Robot Sensor Data Loaded Successfully
-                </h2>
+          <div className="rounded-2xl border border-slate-800 bg-slate-950/50 p-5">
+            <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-500/15 text-emerald-300">
+              Y
+            </div>
 
-                <p className="mt-4 max-w-3xl leading-7 text-slate-400">
-                  The dashboard is displaying static robot sensor readings from
-                  the data file. The data includes pressure, humidity, and
-                  temperature measurements collected through MQTT topics.
-                </p>
+            <h3 className="text-lg font-bold text-white">
+              משתנים תלויים
+            </h3>
 
-                <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-3">
-                  <div className="rounded-2xl border border-slate-800 bg-slate-950/40 p-4">
-                    <p className="text-sm text-slate-500">Latest Pressure</p>
-                    <p className="mt-2 text-2xl font-bold text-white">
-                      {latestPressure.toFixed(1)} hPa
-                    </p>
-                  </div>
+            <p className="mt-3 leading-7 text-slate-400">
+              טמפרטורה, לחות יחסית ולחץ אוויר. אלו המדדים שהחיישנים
+              מודדים, ואותם נבדוק כדי לראות האם הם משתנים בין גבהי
+              הדגימה השונים.
+            </p>
+          </div>
 
-                  <div className="rounded-2xl border border-slate-800 bg-slate-950/40 p-4">
-                    <p className="text-sm text-slate-500">Latest Humidity</p>
-                    <p className="mt-2 text-2xl font-bold text-white">
-                      {latestHumidity.toFixed(1)}%
-                    </p>
-                  </div>
+          <div className="rounded-2xl border border-slate-800 bg-slate-950/50 p-5">
+            <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-amber-500/15 text-amber-300">
+              !
+            </div>
 
-                  <div className="rounded-2xl border border-slate-800 bg-slate-950/40 p-4">
-                    <p className="text-sm text-slate-500">
-                      Latest Temperature
-                    </p>
-                    <p className="mt-2 text-2xl font-bold text-white">
-                      {latestTemperature.toFixed(1)}°C
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </section>
-          </section>
-        )}
+            <h3 className="text-lg font-bold text-white">משתני בקרה</h3>
+
+            <p className="mt-3 leading-7 text-slate-400">
+              מיקום הרובוט, זמן המדידה, תנאי אוורור, פעילות אנשים או
+              מכונות במעבדה ודיוק החיישנים. משתנים אלו יכולים להשפיע על
+              המדידות ולכן חשוב לתעד אותם.
+            </p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+          <div className="rounded-2xl border border-slate-800 bg-slate-950/50 p-5">
+            <p className="text-sm font-semibold text-slate-500">
+              שלב 1
+            </p>
+
+            <h3 className="mt-2 text-lg font-bold text-white">
+              סטטיסטיקה תיאורית
+            </h3>
+
+            <p className="mt-3 leading-7 text-slate-400">
+              לפני ביצוע מבחן סטטיסטי יש לתאר את הנתונים. עבור כל גובה
+              ועבור כל מדד סביבתי יש לחשב ממוצע, חציון, סטיית תקן, ערך
+              מינימלי, ערך מקסימלי וטווח. כך ניתן להבין האם קיימים
+              הבדלים ראשוניים בין הגבהים.
+            </p>
+          </div>
+
+          <div className="rounded-2xl border border-slate-800 bg-slate-950/50 p-5">
+            <p className="text-sm font-semibold text-slate-500">
+              שלב 2
+            </p>
+
+            <h3 className="mt-2 text-lg font-bold text-white">
+              בדיקת השערות
+            </h3>
+
+            <p className="mt-3 leading-7 text-slate-400">
+              השערת האפס היא שלא קיימים הבדלים מובהקים במדדי טמפרטורה,
+              לחות ולחץ בין גבהי הדגימה השונים. השערת המחקר היא שקיים
+              הבדל מובהק לפחות באחד מהמדדים בין הגבהים.
+            </p>
+          </div>
+        </div>
+
+        <div className="rounded-2xl border border-emerald-500/20 bg-gradient-to-br from-emerald-500/10 to-slate-950 p-5">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+            <div>
+              <p className="text-sm font-semibold text-emerald-300">
+                Statistical Test
+              </p>
+
+              <h3 className="mt-2 text-xl font-bold text-white">
+                המבחן הסטטיסטי המתאים
+              </h3>
+            </div>
+
+            <span className="w-fit rounded-full bg-emerald-500/15 px-4 py-2 text-sm font-semibold text-emerald-300 ring-1 ring-emerald-500/20">
+              Repeated Measures ANOVA
+            </span>
+          </div>
+
+          <p className="mt-4 leading-8 text-slate-300">
+            המבחן המרכזי המתאים לפרויקט הוא Repeated Measures ANOVA,
+            מכיוון שהמחקר בודק האם קיימים הבדלים מובהקים במדדים כמותיים
+            רציפים — טמפרטורה, לחות ולחץ — בין כמה גבהים שונים של אותה
+            מערכת מדידה. אם הנתונים אינם עומדים בהנחות המבחן, או אם
+            מספר המדידות קטן, ניתן להשתמש ב־Friedman Test כחלופה
+            לא־פרמטרית. אם קיימים רק שני גבהים בלבד, ניתן להשתמש
+            ב־Paired Samples t-test.
+          </p>
+        </div>
+      </div>
+    </section>
+  </section>
+)}
 
         {activeTab === "sensors" && (
           <section className="space-y-4">
